@@ -1,41 +1,46 @@
 ###############################################################################
-# Version 9.01 Functions, Last Modified, 09/12/2021
+# Version 9.02 Functions, Last Modified, 09/12/2021
 ###############################################################################
 import math
 import numpy as np
 from scipy.special import factorial
 from mpmath import polylog
-from V09Params import bjArray, J, zLim
+from V09Params import bjArray, J, zLim, lengthFactor, fieldFactor
 ###############################################################################
 
 
-def u(x, y): # Units of u are metres, as x & y are in metres.
+def u(x, y):
     
     u = (1/np.sqrt(2))*complex(x,y)
+    
+    u = u*lengthFactor
     
     return u
 # Returns the complex number "u" in the form (x + iy).
 
 
-def v(x, y): # Units of v are metres, as x & y are in metres.
+def v(x, y):
     
     v = (1/np.sqrt(2))*complex(x,-y)
+    
+    v = v*lengthFactor
     
     return v
 # Returns the complex number "v" in the form (x - iy).
 
 
-def zeta(z): # Units of zeta are in metres, as z is in metres.
+def zeta(z):
     
     zeta = np.sqrt(2)*z
     
-    return zeta
-# Returns zeta, the product of the z-coordinate and root 2.
-
-
-def bj(n): # bj reprisents some unknown variable of unknown units.
+    z = z*lengthFactor
     
-    bj = bjArray[0:(n+1)] #Get only the needed elements of bjArray.
+    return zeta
+
+
+def bj(n):
+    
+    bj = bjArray[0:(n+1)]
     
     bjToSum = bj[1:]
     
@@ -51,7 +56,7 @@ def bj(n): # bj reprisents some unknown variable of unknown units.
 # Returns all of bj as an array of length (n+1).
 
 
-def cj(n): # cj reprisents some constants derrived from the values of bj.
+def cj(n):
     
     zeroArray1 = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0], dtype = np.complex_)
         
@@ -85,8 +90,7 @@ def cj(n): # cj reprisents some constants derrived from the values of bj.
 # Returns all of cj as an array of length (n+1).
 
 
-def hj(x, y, bjIndex, n): # Units of hj are metres, as u & v are in metres and
-                     # all b parameters seem to be unitless variables.
+def hj(x, y, bjIndex, n):
     
     bjVals = bj(n)
     
@@ -97,7 +101,7 @@ def hj(x, y, bjIndex, n): # Units of hj are metres, as u & v are in metres and
 # Returns the sum of u & v, both modified by the parameter bj.
 
 
-def G(xi, n): # If xi has units of metres then G should have units of per metre. m^-1.
+def G(xi, n):
     
     if xi == 0:
         
@@ -122,21 +126,21 @@ def G(xi, n): # If xi has units of metres then G should have units of per metre.
     return function
 
 
-def f(eta, n): # For multipole number n, and with eta in metres, f has units metres^(n-1).
+def f(eta, n):
     
     output = np.power(eta, n)*G(eta, n)
     
     return output
 
 
-def g(eta, n): # For multipole number n, and with eta in metres, f has units metres^(n-1).
+def g(eta, n):
     
     output = np.power(-1, (n+1))*np.power(eta, n)*G(eta, n)
     
     return output
 
 
-def bu(x, y, z, n): # For multipole number n, and with x, y, z in metres, f has units metres^(n-1).
+def bu(x, y, z, n):
     
     bjVals = bj(n)
     
@@ -151,11 +155,13 @@ def bu(x, y, z, n): # For multipole number n, and with x, y, z in metres, f has 
         secondFunc = -cjVals[i]*bjVals[i]*g((zeta(z) - J*hj(x, y, i, n)), n)
         
         output += J*(firstFunc + secondFunc)
+        
+        output = output*fieldFactor
     
     return output
 
 
-def bv(x, y, z, n): # For multipole number n, and with x, y, z in metres, f has units metres^(n-1).
+def bv(x, y, z, n):
     
     bjVals = bj(n)
     
@@ -170,12 +176,14 @@ def bv(x, y, z, n): # For multipole number n, and with x, y, z in metres, f has 
         secondFunc = -(cjVals[i]/bjVals[i])*g((zeta(z) - J*hj(x, y, i, n)), n)
         
         output += J*(firstFunc + secondFunc)
+        
+        output = output*fieldFactor
     
     return output
 
 
 
-def bzeta(x, y, z, n): # For multipole number n, and with x, y, z in metres, f has units metres^(n-1).
+def bzeta(x, y, z, n):
     
     cjVals = cj(n)
     
@@ -188,18 +196,20 @@ def bzeta(x, y, z, n): # For multipole number n, and with x, y, z in metres, f h
         secondFunc = (cjVals[i])*g((zeta(z) - J*hj(x, y, i, n)), n)
         
         output += firstFunc + secondFunc
+        
+        output = output*fieldFactor
     
     return output
 
 
-def bx(x, y, z, n): # For multipole number n, and with x, y, z in metres, f has units metres^(n-1).
+def bx(x, y, z, n):
     
     output = (1/np.sqrt(2))*(bu(x, y, z, n) + bv(x, y, z, n))
     
     return output
 
 
-def by(x, y, z, n): # For multipole number n, and with x, y, z in metres, f has units metres^(n-1).
+def by(x, y, z, n):
     
     output = (-J/np.sqrt(2))*(bu(x, y, z, n) - bv(x, y, z, n))
     

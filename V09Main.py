@@ -1,5 +1,5 @@
 ###############################################################################
-# Version 9.01 Main, Last Modified, 09/12/2021
+# Version 9.02 Main, Last Modified, 09/12/2021
 ###############################################################################
 import numpy as np
 import matplotlib.cm as cm
@@ -9,7 +9,7 @@ from V09Functions import FFT, FFTFit, ScalarPotential
 from V09Params import zLim, zLimPlot
 ###############################################################################
 
-do_Field_Plots = True
+do_Field_Plots = False
 
 do_Fourier_Analysis = False
 
@@ -17,7 +17,7 @@ do_Fast_Fourier_Transform = False
 
 do_Fourier_Comparisons = False
 
-do_FFT_Scalar_Potential = True
+do_FFT_Scalar_Potential = False
 
 do_2D_Scalar_Potential_Multipole_Plots = True
 
@@ -34,7 +34,7 @@ if do_Field_Plots:
     
     for i in range(5):
         for k in range (201):
-            fig1Data[i][k] = G((k-100), i)
+            fig1Data[i][k] = G((k-100), i) #Apply length and field factors at the end such as here.
     
     plt.title('Enge Roll-Off For N-Order Multipoles')
     plt.plot(fig1Range, fig1Data[0,:], label = 'n=0, Dipole')
@@ -500,7 +500,8 @@ if do_2D_Scalar_Potential_Multipole_Plots:
             datasetOctupole[k,i] = dataPoint3
     
     plt.clf()
-    plt.pcolormesh(X, Y, datasetDipole, cmap = cm.seismic) 
+    plt.pcolormesh(X, Y, datasetDipole, cmap = cm.seismic)
+    plt.axis('equal')
     plt.title('Dipole x,y Scalar Potential Heat Map, z = 0')
     plt.xlabel('x (mm)')
     plt.ylabel('y (mm)')
@@ -508,7 +509,8 @@ if do_2D_Scalar_Potential_Multipole_Plots:
     plt.show()  
     
     plt.clf()
-    plt.pcolormesh(X, Y, datasetQuadrupole, cmap = cm.seismic) 
+    plt.pcolormesh(X, Y, datasetQuadrupole, cmap = cm.seismic)
+    plt.axis('equal')
     plt.title('Quadrupole x,y Scalar Potential Heat Map, z = 0')
     plt.xlabel('x (mm)')
     plt.ylabel('y (mm)')
@@ -517,6 +519,7 @@ if do_2D_Scalar_Potential_Multipole_Plots:
     
     plt.clf()
     plt.pcolormesh(X, Y, datasetSextupole, cmap = cm.seismic) 
+    plt.axis('equal')
     plt.title('Sextupole x,y Scalar Potential Heat Map, z = 0')
     plt.xlabel('x (mm)')
     plt.ylabel('y (mm)')
@@ -525,6 +528,7 @@ if do_2D_Scalar_Potential_Multipole_Plots:
     
     plt.clf()
     plt.pcolormesh(X, Y, datasetOctupole, cmap = cm.seismic) 
+    plt.axis('equal')
     plt.title('Octupole x,y Scalar Potential Heat Map, z = 0')
     plt.xlabel('x (mm)')
     plt.ylabel('y (mm)')
@@ -533,6 +537,7 @@ if do_2D_Scalar_Potential_Multipole_Plots:
     
     plt.clf()
     plt.contour(X, Y, datasetQuadrupole, levels = [-0.5, -0.4, -0.3, -0.25, -0.2, 0.2, 0.25, 0.3, 0.4, 0.5])#, cmap = cm.seismic) 
+    plt.axis('equal')
     plt.title('Quadrupole x,y Scalar Potential Heat Map, z = 0')
     plt.xlabel('x (mm)')
     plt.ylabel('y (mm)')
@@ -541,6 +546,7 @@ if do_2D_Scalar_Potential_Multipole_Plots:
     
     plt.clf()
     plt.contour(X, Y, datasetSextupole, levels = [-0.5, -0.4, -0.3, -0.25, -0.2, 0.2, 0.25, 0.3, 0.4, 0.5])#, cmap = cm.seismic) 
+    plt.axis('equal')
     plt.title('Sextupole x,y Scalar Potential Heat Map, z = 0')
     plt.xlabel('x (mm)')
     plt.ylabel('y (mm)')
@@ -549,6 +555,7 @@ if do_2D_Scalar_Potential_Multipole_Plots:
     
     plt.clf()
     plt.contour(X, Y, datasetOctupole, levels = [-0.4, -0.3, -0.25, -0.2, -0.15, 0.15, 0.2, 0.25, 0.3, 0.4])#, cmap = cm.seismic) 
+    plt.axis('equal')
     plt.title('Octupole x,y Scalar Potential Heat Map, z = 0')
     plt.xlabel('x (mm)')
     plt.ylabel('y (mm)')
@@ -574,7 +581,7 @@ if do_2D_Scalar_Potential_Multipole_Plots:
     plt.show()
 
 ###############################################################################
-
+'''
 if do_3D_Scalar_Potential_Multipole_Plots:
     
     fourierRes = 25#51 #201
@@ -617,8 +624,9 @@ if do_3D_Scalar_Potential_Multipole_Plots:
                            linewidth=0, antialiased=False)
     plt.show()
     plt.clf()
-    '''
+    
     plt.plot_surface(X, Y, np.absolute(datasetSextupole[1,:,:]), cmap=cm.coolwarm,
                     linewidth=0, antialiased=False)
     plt.show()
-    '''
+    
+'''

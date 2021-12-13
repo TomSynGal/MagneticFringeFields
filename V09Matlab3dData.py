@@ -1,5 +1,5 @@
 ###############################################################################
-# Version 9.01 Matlab3dData, Last Modified, 09/12/2021
+# Version 9.02 Matlab3dData, Last Modified, 09/12/2021
 ###############################################################################
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,11 +12,11 @@ do_Quadrupole = False
 
 do_Sextupole = False
 
-do_Octupole = True
+do_Octupole = False
 
 ###############################################################################
 fourierRes = 101 #201
-nFourierCoeffs = 45 #45
+nFourierCoeffs = 45
 depth = 0.75
 depthRes = 21
 scalarPotentialLevel = 0.2
